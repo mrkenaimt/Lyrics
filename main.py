@@ -210,13 +210,13 @@ async def handle_group_message(update: Update, context: ContextTypes.DEFAULT_TYP
 
     artist, title = await get_artist_title(message)
     if not artist or not title:
-        logger.info("ماعرفتش نستخرج اسم المغني/العنوان، نتخطى.")
+        logger.info("i can't find the artist or the name for this song.")
         return
 
     lyrics = await fetch_lyrics(artist, title)
 
     if lyrics:
-        header = f"🎵 كلمات: {artist} - {title}\n\n"
+        header = f"🎵 LYRICS: {artist} - {title}\n\n"
         full_text = header + lyrics
         chunks = split_text(full_text, max_length=4000)
 
@@ -225,7 +225,7 @@ async def handle_group_message(update: Update, context: ContextTypes.DEFAULT_TYP
                 chunk = f"{chunk}\n\n[{i+1}/{len(chunks)}]"
             await message.reply_text(chunk)
     else:
-        reply_text = f"⚠️ ماعرفتش نلقى كلمات لـ {artist} - {title}"
+        reply_text = f"⚠️ i can't find lyrics for{artist} - {title}"
         await message.reply_text(reply_text)
 
 
